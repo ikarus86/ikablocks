@@ -11,7 +11,7 @@ public class Physics {
 	 * @param entity2: Object that may have collided
 	 * @return
 	 */
-	static public boolean checkCollision(Entity entity1, Entity entity2) {
+	static public boolean checkCollisionBB(Entity entity1, Entity entity2) {
 		boolean collided = false;
 		// We check collision on the X axis
 		float x1ini, x1end, x2ini, x2end;
@@ -33,6 +33,29 @@ public class Physics {
 			collided &= y2ini < y1end;
 		else
 			collided &= y1ini < y2end;
+		return collided;
+	}
+	
+	/**
+	 * Method to check the collision between two Entities using
+	 * the bounding box algorithm.
+	 * @param entity1: Object that collides
+	 * @param entity2: Object that may have collided
+	 * @return
+	 */
+	static public boolean checkCollisionBallSurface(Entity ball, Vector2 pointA, Vector2 pointB) {
+		boolean collided = false;
+		Vector2 surfaceVector, ballSurfaceVector, massCenter;
+		// We create the vector defined by the surface 
+		// and the ball and one of the surface's points
+		surfaceVector = new Vector2(pointB.x-pointA.x,pointB.y-pointA.y);
+		massCenter = ball.getPosition().cpy();
+		massCenter.x += ball.getBounds().width/2;
+		massCenter.y += ball.getBounds().height/2;
+		ballSurfaceVector = new Vector2(pointB.x-massCenter.x,pointB.y-massCenter.y);
+		
+		
+		
 		return collided;
 	}
 	
@@ -140,7 +163,6 @@ public class Physics {
 	 */
 	static private Vector2 bounceSurface(Vector2 direction, Vector2 pointA, Vector2 pointB) {
 		Vector2 newVelocity, normal, projection;
-		double normalLength;
 		
 		// We get the movement direction for the bouncer
 		newVelocity = direction.cpy();
@@ -150,9 +172,7 @@ public class Physics {
 		projection = vectorProjection(newVelocity,normal);
 		
 		// Now we  use the projection to change the vector's direction
-		newVelocity.x -= 2*projection.x;
-		newVelocity.y -= 2*projection.y;
-		
+		newVelocity.sub(projection.scl(2));		
 		
 		// If the alpha (projection) is positive, that means the bouncer
 		// will collide against the surface. Otherwise the surface is not on the way.
@@ -170,9 +190,7 @@ public class Physics {
 		double moduleMain, moduleProjection;
 		
 		// We normalize the main vector first
-		moduleMain = Math.sqrt(mainVector.x*mainVector.x + mainVector.y*mainVector.y);
-		mainVector.x /= moduleMain;
-		mainVector.y /= moduleMain;
+		mainVector.limit(1);
 		
 		// We compute the projection's module
 		moduleProjection = mainVector.x*vector.x + mainVector.y*vector.y;
@@ -194,9 +212,7 @@ public class Physics {
 		double moduleMain, moduleProjection;
 		
 		// We normalize the main vector first
-		moduleMain = Math.sqrt(mainVector.x*mainVector.x + mainVector.y*mainVector.y);
-		mainVector.x /= moduleMain;
-		mainVector.y /= moduleMain;
+		mainVector.limit(1);
 		
 		// We compute the projection's module
 		moduleProjection = -mainVector.y*vector.x + mainVector.x*vector.y;
