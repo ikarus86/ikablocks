@@ -4,7 +4,13 @@ import com.badlogic.gdx.math.Vector2;
 
 
 public class Physics {
-	
+	/**
+	 * Method to check the collision between two Entities using
+	 * the bounding box algorithm.
+	 * @param entity1: Object that collides
+	 * @param entity2: Object that may have collided
+	 * @return
+	 */
 	static public boolean checkCollision(Entity entity1, Entity entity2) {
 		boolean collided = false;
 		// We check collision on the X axis
@@ -29,9 +35,15 @@ public class Physics {
 			collided &= y1ini < y2end;
 		return collided;
 	}
-	// Bouncing for bounding boxes
-	// Better bouncing between an entity and a surface should be implemented
-	// Also surface bouncing check
+	
+	
+	/**
+	 * Method to get the bouncing direction between a bouncing object
+	 * and a bounding box.
+	 * @param bouncer
+	 * @param block
+	 * @return
+	 */
 	static public Vector2 getBounce(Entity bouncer, Entity block) {
 		Vector2 bounceDir = new Vector2(bouncer.getVelocity());
 		Vector2 pointA, pointB, v;
@@ -127,29 +139,72 @@ public class Physics {
 	 * @return the bouncing direction
 	 */
 	static private Vector2 bounceSurface(Vector2 direction, Vector2 pointA, Vector2 pointB) {
-		Vector2 newVelocity, normal;
-		double normalLength, projection;
+		Vector2 newVelocity, normal, projection;
+		double normalLength;
 		
 		// We get the movement direction for the bouncer
 		newVelocity = direction.cpy();
 		
 		// We the surface's normal
 		normal = new Vector2(pointA.y-pointB.y,pointB.x-pointA.x);
-		normalLength = Math.sqrt(normal.x*normal.x + normal.y*normal.y);
-		normal.x /= normalLength;
-		normal.y /= normalLength;
-		
-		// We compute the projection of the velocity to the normal vector
-		projection = normal.x*newVelocity.x + normal.y*newVelocity.y;
+		projection = vectorProjection(newVelocity,normal);
 		
 		// Now we  use the projection to change the vector's direction
-		newVelocity.x -= 2*projection*normal.x;
-		newVelocity.y -= 2*projection*normal.y;
+		newVelocity.x -= 2*projection.x;
+		newVelocity.y -= 2*projection.y;
 		
 		
 		// If the alpha (projection) is positive, that means the bouncer
 		// will collide against the surface. Otherwise the surface is not on the way.
 		return newVelocity;
+	}
+	
+	/**
+	 * Method to compute the projection of a vector into another
+	 * @param vector: Vector to project
+	 * @param mainVector: Vector where we project
+	 * @return
+	 */
+	static private Vector2 vectorProjection(Vector2 vector, Vector2 mainVector) {
+		Vector2 projection;
+		double moduleMain, moduleProjection;
+		
+		// We normalize the main vector first
+		moduleMain = Math.sqrt(mainVector.x*mainVector.x + mainVector.y*mainVector.y);
+		mainVector.x /= moduleMain;
+		mainVector.y /= moduleMain;
+		
+		// We compute the projection's module
+		moduleProjection = mainVector.x*vector.x + mainVector.y*vector.y;
+		
+		// Finally we compute the projection
+		projection = new Vector2((float)moduleProjection*mainVector.x,(float)moduleProjection*mainVector.y);
+		
+		return projection;
+	}
+	
+	/**
+	 * Method to compute the antiprojection of a vector into another
+	 * @param vector: Vector to project
+	 * @param mainVector: Vector where we project
+	 * @return
+	 */
+	static private Vector2 vectorAntiProjection(Vector2 vector, Vector2 mainVector) {
+		Vector2 projection;
+		double moduleMain, moduleProjection;
+		
+		// We normalize the main vector first
+		moduleMain = Math.sqrt(mainVector.x*mainVector.x + mainVector.y*mainVector.y);
+		mainVector.x /= moduleMain;
+		mainVector.y /= moduleMain;
+		
+		// We compute the projection's module
+		moduleProjection = -mainVector.y*vector.x + mainVector.x*vector.y;
+		
+		// Finally we compute the projection
+		projection = new Vector2((float)-moduleProjection*mainVector.y,(float)moduleProjection*mainVector.x);
+		
+		return projection;
 	}
 
 }
