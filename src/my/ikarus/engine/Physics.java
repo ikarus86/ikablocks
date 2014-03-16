@@ -45,16 +45,21 @@ public class Physics {
 	 */
 	static public boolean checkCollisionBallSurface(Entity ball, Vector2 pointA, Vector2 pointB) {
 		boolean collided = false;
-		Vector2 surfaceVector, ballSurfaceVector, massCenter;
+		Vector2 surfaceVector, ballBVector, ballSurfaceVector, massCenter;
+		
 		// We create the vector defined by the surface 
 		// and the ball and one of the surface's points
 		surfaceVector = new Vector2(pointB.x-pointA.x,pointB.y-pointA.y);
 		massCenter = ball.getPosition().cpy();
 		massCenter.x += ball.getBounds().width/2;
 		massCenter.y += ball.getBounds().height/2;
-		ballSurfaceVector = new Vector2(pointB.x-massCenter.x,pointB.y-massCenter.y);
+		ballBVector = new Vector2(pointB.x-massCenter.x,pointB.y-massCenter.y);
 		
+		// We get the antiprojection of the vector between the ball and point B
+		ballSurfaceVector = vectorAntiProjection(ballBVector, surfaceVector);
 		
+		// We check that the ball to surface vector is shorter than the radius of the ball
+		collided = 2*ballSurfaceVector.len() < ball.getBounds().height;
 		
 		return collided;
 	}
