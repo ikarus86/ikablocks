@@ -247,7 +247,7 @@ public class WorldController {
 					// Now that we have a collider we look if it hit something.
 					entity = world.getEntities().get(i);
 					if (entity.isCollidable() && entity != collider) {
-						collision = Physics.checkCollision(collider,entity);
+						collision = Physics.checkCollisionBB(collider,entity);
 						collider.setCollided(collision);
 						entity.setCollided(collision);
 						if (collision)
