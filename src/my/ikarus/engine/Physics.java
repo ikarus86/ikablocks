@@ -192,7 +192,7 @@ public class Physics {
 	 */
 	static private Vector2 vectorProjection(Vector2 vector, Vector2 mainVector) {
 		Vector2 projection;
-		double moduleMain, moduleProjection;
+		double moduleProjection;
 		
 		// We normalize the main vector first
 		mainVector.limit(1);
@@ -214,7 +214,7 @@ public class Physics {
 	 */
 	static private Vector2 vectorAntiProjection(Vector2 vector, Vector2 mainVector) {
 		Vector2 projection;
-		double moduleMain, moduleProjection;
+		double moduleProjection;
 		
 		// We normalize the main vector first
 		mainVector.limit(1);
