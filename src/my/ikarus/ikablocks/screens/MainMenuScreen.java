@@ -1,12 +1,20 @@
 package my.ikarus.ikablocks.screens;
 
+import my.ikarus.ikablocks.Ikablocks;
+
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.GL10;
 
 public class MainMenuScreen implements Screen, InputProcessor {
 
 	
-	//private Ikablocks game;
+	private Ikablocks game;
+	
+	public MainMenuScreen(Ikablocks game) {
+		this.game = game;
+	}
 	
 	@Override
 	public boolean keyDown(int keycode) {
@@ -29,6 +37,7 @@ public class MainMenuScreen implements Screen, InputProcessor {
 	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
 		// TODO Auto-generated method stub
+		this.game.setScreen(new GameScreen(this.game));
 		return false;
 	}
 
@@ -59,7 +68,8 @@ public class MainMenuScreen implements Screen, InputProcessor {
 	@Override
 	public void render(float delta) {
 		// TODO Auto-generated method stub
-
+		Gdx.gl.glClearColor(0.1f, 0.1f, 0.1f, 1);
+		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 	}
 
 	@Override

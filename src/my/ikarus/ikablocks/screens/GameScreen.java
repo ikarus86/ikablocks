@@ -13,14 +13,14 @@ import com.badlogic.gdx.graphics.GL10;
 
 public class GameScreen implements Screen, InputProcessor {
 	
-	//private Ikablocks game;
+	private Ikablocks game;
 	
 	private World world;
 	private WorldRenderer renderer;
 	private WorldController controller;
 	
 	public GameScreen(Ikablocks game) {
-		//this.game = game;
+		this.game = game;
 	}
 	
 	@Override
