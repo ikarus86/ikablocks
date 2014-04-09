@@ -1,3 +1,6 @@
 # Object files
 *.class
 bin/
+# Eclipse
+.settings/
+.project
