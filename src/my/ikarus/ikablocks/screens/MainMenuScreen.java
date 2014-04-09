@@ -1,6 +1,7 @@
 package my.ikarus.ikablocks.screens;
 
 import my.ikarus.ikablocks.Ikablocks;
+import my.ikarus.ikablocks.view.MainMenuRenderer;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
@@ -11,6 +12,7 @@ public class MainMenuScreen implements Screen, InputProcessor {
 
 	
 	private Ikablocks game;
+	private MainMenuRenderer renderer;
 	
 	public MainMenuScreen(Ikablocks game) {
 		this.game = game;
@@ -37,14 +39,14 @@ public class MainMenuScreen implements Screen, InputProcessor {
 	@Override
 	public boolean touchDown(int screenX, int screenY, int pointer, int button) {
 		// TODO Auto-generated method stub
-		this.game.setScreen(new GameScreen(this.game));
-		return false;
+		return true;
 	}
 
 	@Override
 	public boolean touchUp(int screenX, int screenY, int pointer, int button) {
 		// TODO Auto-generated method stub
-		return false;
+		this.game.setScreen(new GameScreen(this.game));
+		return true;
 	}
 
 	@Override
@@ -70,24 +72,27 @@ public class MainMenuScreen implements Screen, InputProcessor {
 		// TODO Auto-generated method stub
 		Gdx.gl.glClearColor(0.1f, 0.1f, 0.1f, 1);
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
+		
+		renderer.render();
 	}
 
 	@Override
 	public void resize(int width, int height) {
 		// TODO Auto-generated method stub
-
+		renderer.setSize(width, height);
 	}
 
 	@Override
 	public void show() {
 		// TODO Auto-generated method stub
-
+		renderer = new MainMenuRenderer();
+		Gdx.input.setInputProcessor(this);
 	}
 
 	@Override
 	public void hide() {
 		// TODO Auto-generated method stub
-
+		Gdx.input.setInputProcessor(null);
 	}
 
 	@Override

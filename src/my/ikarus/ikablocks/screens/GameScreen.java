@@ -68,7 +68,7 @@ public class GameScreen implements Screen, InputProcessor {
 
 	}
 	
-	// * InputProcessor methods ***************************//
+	// * InputProcessor methods *//
 	 
 	    @Override
 	    public boolean keyDown(int keycode) {
