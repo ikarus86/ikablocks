@@ -2,5 +2,6 @@
 *.class
 bin/
 # Eclipse
+lib/
 .settings/
 .project
